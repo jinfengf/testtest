@@ -6,9 +6,12 @@ package generics;
 
 public class ErasureAndInheritance {
     public static void main(String[] args) {
-        Derived2 d2 = new Derived2();
-        Object obj = d2.get();
-        d2.set(obj);
+//        Derived2 d2 = new Derived2();
+//        Object obj = d2.get();
+//        d2.set(obj);
+        Derived1<String> d1 = new Derived1<>();
+        String s = d1.get();
+        d1.set(s);
     }
 }
 

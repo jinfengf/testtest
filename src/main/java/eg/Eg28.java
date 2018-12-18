@@ -1,7 +1,5 @@
 package eg;
 
-import sun.net.www.content.text.Generic;
-
 /**
  * Created by jiguang on 2018/8/22.
  */

@@ -1,21 +1,20 @@
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.annotations.Expose;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executor;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import sun.net.www.content.text.Generic;
 
 /**
  * Created by jiguang on 2018/2/24.
@@ -25,6 +24,9 @@ public class PatternTest<T> {
 
     private static Object object = new Object();
     private static Object object1 = new Object();
+
+    private static boolean stopRequested = false;
+    private static Map<Integer, Integer> map = new ConcurrentHashMap();
 
     public enum DateType {
         im_response(0), network_change(1);
@@ -159,11 +161,6 @@ public class PatternTest<T> {
 
     }
 
-    static class Generic1<T> extends TypeToken<T> {
-        Generic1() {
-        }
-    }
-
     static void f1(String[] strings) {
         for (String s : strings) {
             System.out.println(s);
@@ -197,15 +194,215 @@ public class PatternTest<T> {
         String s = "aaa";
     }
 
-    static class Counter1 {
-        JsonElement counter;
-    }
-
     static class Counter2 {
         String counter;
     }
 
+
+    static void fff2() {
+        System.out.println("aaaaaaa");
+        return;
+    }
+
+    private static void requestStop() {
+        stopRequested = true;
+    }
+    private static synchronized boolean stopRequested() {
+        return stopRequested;
+    }
+    private static AtomicInteger id = new AtomicInteger();
+
+    static class IntegerCompator implements Comparator<Integer> {
+        @Override
+        public int compare(Integer t1, Integer t2) {
+            int result = 0;
+            if (t1 > t2) {
+                result = 1;
+            } else if (t1 > t2) {
+                result = -1;
+            }
+            System.out.println("compare" + t1 + "," + t2 + ".result:" + result);
+            return result;
+        }
+    }
+
+    static <T extends Collection<G>> T kkkk(T t) {
+        return t;
+    }
+
+    static class MM<T> {
+        void g(T t) {
+        }
+
+        static <T> MM<T>get(T t) {
+            return new MM<T>();
+        }
+    }
+
+    static void ffff(String s, String s1, String... param) {
+        System.out.println(param == null);
+        System.out.println(param[1]);
+        fffff(param);
+    }
+
+    static void fffff(String... param) {
+        System.out.println(param == null);
+        System.out.println(param.length);
+    }
+    static AtomicBoolean b = new AtomicBoolean(true);
+
+//    public synchronized static boolean getBoolean() {
+//        return b;
+//    }
+
+    public static <T extends G> void test1(List<T> list) {
+    }
+
+    public static class Cache<T> {
+        T value;
+
+        public T getValue() {
+            return value;
+        }
+
+        public void setValue(T value) {
+            this.value = value;
+        }
+
+    }
+
+    interface Lam {
+        void f(int a, int b, G c);
+    }
+
+    enum M {
+        A, B, C, D;
+
+        public int getValue() {
+            return 1;
+        }
+    }
+
+
+    static boolean as = true;
+
+    static int a;
+
+    static int fff() {
+        Random random = new Random(System.currentTimeMillis());
+        a = random.nextInt(100) + 1;
+        System.out.println(a);
+        if (a % 2 != 0) {
+            fff();
+        }
+        return a;
+    }
+
+    static abstract class MMM<T> {
+        public abstract void getResult(T t);
+        public void getResult(Object... objects) {
+            if (objects != null && objects.length > 0 && objects[0] != null) {
+                getResult((T) objects[0]);
+            }
+        }
+    }
+
+    static class KK {
+        MMM mm;
+        KK(MMM mm) {
+            this.mm = mm;
+        }
+        void f(Object... objects) {
+            mm.getResult(objects);
+        }
+    }
+
+    static boolean cancel = false;
+
+    static void f(G... parm) {
+        System.out.println(parm == null);
+        System.out.println(parm.length);
+        Object o = null;
+        G g = (G) o;
+        System.out.println((G) parm[0]);
+    }
+
+    static class Compa implements Comparator<Integer> {
+        @Override
+        public int compare(Integer integer, Integer t1) {
+            return integer > t1 ? -1 : integer < t1 ? 1 : 0;
+        }
+    }
+
+    static class FF {
+        boolean flag = false;
+
+//        synchronized boolean get() {
+//            return flag;
+//        }
+    }
+    static volatile FF ff = new FF();
+
     public static void main(String[] args) {
+        G g = new G();
+        GG gg = new GG();
+        gg.a = 1;
+        gg.b = 2;
+        g.gg = gg;
+        Gson gson = new Gson();
+        Gson gson1 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String json = gson.toJson(g);
+        String json1 = gson1.toJson(g);
+        System.out.println(json);
+        System.out.println(json1);
+        G g1 = gson1.fromJson(json, G.class);
+        System.out.println(g1.gg.a);
+        System.out.println(g1.gg.b);
+        GGG g2 = gson.fromJson(json, GGG.class);
+        System.out.println(g2.a);
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        System.out.println(jsonObject.getAsJsonPrimitive("a").isString());
+        System.out.println(jsonObject.has("c"));
+        System.out.println(jsonObject.getAsJsonPrimitive("c"));
+
+//        System.out.println(list1.get(0));
+//        System.out.println(list.get(0).getClass().getName());
+
+
+//        String s = "aaaaa";
+//        System.out.println(json);
+//        String json2 = json.replace("aaa", "bbb");
+//        System.out.println(json2);
+//        G g1 = gson.fromJson(json2, G.class);
+//        System.out.println(g1.b);
+
+
+//        System.out.println(Charset.defaultCharset().toString());
+//        String a = new String("?abcdef");
+//        System.out.println(a.length());
+//        System.out.println(a);
+//        System.out.println(a.getBytes().length);
+//        System.out.println(a.getBytes("UTF-8").length);
+//        System.out.println(a.getBytes("UTF-16").length);
+//        System.out.println(a.getBytes("GBK").length);
+//        System.out.println(a);
+//        byte[] bytes = a.getBytes("GBK");
+//        String b = new String(bytes, "UTF-8");
+//        System.out.println(b);
+//        System.out.println(new String(a.getBytes("UTF-8"), "UTF-8"));
+//        System.out.println(new String(a.getBytes("UTF-8"), "GBK"));
+//        System.out.println(a.length());
+//        System.out.println(a.getBytes().length);
+//        System.out.println(b.length());
+//        System.out.println(bytes.length);
+//        System.out.println(b.getBytes().length);
+//        String c = new String(b.getBytes());
+//        System.out.println(c);
+//        FF ff = G.ff;
+//        System.out.println(G.ff.a);
+//        System.out.println(ff.hashCode());
+//        ff.a = 3;
+//        System.out.println(G.ff.a);
 //        Gson gson = new Gson();
 //        Counter counter = new Counter();;
 //        JsonElement jsonElement = gson.toJsonTree(counter);
@@ -393,6 +590,17 @@ class P implements Comparable<P> {
     }
 }
 
+interface A1 {
+    void f();
+}
+
+class B1 implements A1 {
+    @Override
+    public void f() {
+
+    }
+}
+
 class Exception1 extends Exception {
     public Exception1() {
         super("Exception1");
@@ -445,17 +653,73 @@ class F {
     }
 }
 
+class FF {
+    public int a = 1;
+}
+
+abstract class G1 {
+    String c = "ccccccccc";
+
+    abstract void f();
+}
+
+class G2 extends G1 {
+    String a = "aaaaaa";
+    String b = "bbbbbbbbbbbb";
+
+//    public G2() {
+//        a = "ddddddddddd";
+//    }
+
+    public G2(int a1, int b1) {
+        super();
+        a = "ddddddddddddd";
+
+    }
+    @Override
+    void f() {
+
+    }
+}
+
 class G {
-    private String a = "11111";
-    public int b = 2;
+    @Expose
+    GG gg;
+    @Expose
+    final String a = "aaaaaa";
 
-    public G(int a, int b) {
+//    @Override
+//    public Object clone() throws CloneNotSupportedException {
+//        return super.clone();
+//    }
+}
 
+class GG {
+    @Expose
+    int a;
+    @Expose
+    int b ;
+}
+
+class GGG {
+    String a;
+}
+
+class GCompator implements Comparator<G> {
+    @Override
+    public int compare(G o, G t1) {
+        return 0;
     }
 }
 
 interface C {
     void f();
+}
+
+abstract class M2 {
+    private void f() {
+        System.out.println("M2");
+    }
 }
 
 

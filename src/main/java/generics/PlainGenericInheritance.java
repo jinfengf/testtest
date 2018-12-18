@@ -10,7 +10,18 @@ class GenericSetter<T> {
     }
 }
 
+class DerivedGS extends GenericSetter<Base> {
+    void set(Derived derived) {
+        System.out.println("DerivedGs.set(Derived)");
+    }
+}
+
 public class PlainGenericInheritance {
     public static void main(String[] args) {
+        Base base = new Base();
+        Derived derived = new Derived();
+        DerivedGS dgs = new DerivedGS();
+        dgs.set(derived);
+        dgs.set(base);
     }
 }
