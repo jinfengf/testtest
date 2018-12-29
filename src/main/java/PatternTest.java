@@ -3,13 +3,27 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -343,27 +357,25 @@ public class PatternTest<T> {
     }
     static volatile FF ff = new FF();
 
+    static class TestException {
+        Exception e;
+        public TestException(Exception e) {
+            this.e = e;
+        }
+        void ff() throws Exception {
+            throw e;
+        }
+    }
+
     public static void main(String[] args) {
-        G g = new G();
-        GG gg = new GG();
-        gg.a = 1;
-        gg.b = 2;
-        g.gg = gg;
-        Gson gson = new Gson();
-        Gson gson1 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(g);
-        String json1 = gson1.toJson(g);
-        System.out.println(json);
-        System.out.println(json1);
-        G g1 = gson1.fromJson(json, G.class);
-        System.out.println(g1.gg.a);
-        System.out.println(g1.gg.b);
-        GGG g2 = gson.fromJson(json, GGG.class);
-        System.out.println(g2.a);
-        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-        System.out.println(jsonObject.getAsJsonPrimitive("a").isString());
-        System.out.println(jsonObject.has("c"));
-        System.out.println(jsonObject.getAsJsonPrimitive("c"));
+        Exception e = new RuntimeException("aaaaa");
+        TestException testException = new TestException(e);
+        try {
+            testException.ff();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+
 
 //        System.out.println(list1.get(0));
 //        System.out.println(list.get(0).getClass().getName());

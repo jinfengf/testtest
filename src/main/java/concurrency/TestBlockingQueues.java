@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by jiguang on 2018/12/10.
@@ -68,6 +69,6 @@ public class TestBlockingQueues {
     public static void main(String[] args) {
         test("LinkedBlockingQueue", new LinkedBlockingDeque<>());
         test("ArrayBlockingQueue", new ArrayBlockingQueue<LiftOff>(3));
-//        test("SynchronousQueue", new S)
+        test("SynchronousQueue", new SynchronousQueue<>());
     }
 }
