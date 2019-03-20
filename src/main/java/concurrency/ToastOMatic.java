@@ -139,6 +139,11 @@ public class ToastOMatic {
         ToastQueue butteredQueue = new ToastQueue();
         ToastQueue finishQueue = new ToastQueue();
         ExecutorService exec = Executors.newCachedThreadPool();
-
+        exec.execute(new Toaster(dryQueue));
+        exec.execute(new Butterer(dryQueue, butteredQueue));
+        exec.execute(new Jammer(butteredQueue, finishQueue));
+        exec.execute(new Eater(finishQueue));
+        TimeUnit.SECONDS.sleep(5);
+        exec.shutdownNow();
     }
 }

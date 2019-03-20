@@ -1,18 +1,15 @@
-package concurrency;
+package eg.concurrency;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by jiguang on 2018/11/10.
+ * Created by jiguang on 2019/1/11.
  */
 
-class Count {
+class Count32 {
     private int count = 0;
     private Random rand = new Random(47);
     public synchronized int increment() {
@@ -28,16 +25,16 @@ class Count {
     }
 }
 
-class Entrance implements Runnable {
-    private static Count count = new Count();
-    private static List<Entrance> entrances = new ArrayList<>();
+class Entrance32 implements Runnable {
+    private static Count32 count = new Count32();
+    private static List<Entrance32> entrances = new ArrayList<>();
     private int number = 0;
     private final int id;
     private static volatile boolean canceled = false;
     public static void cancel() {
         canceled = true;
     }
-    public Entrance(int id) {
+    public Entrance32(int id) {
         this.id = id;
         entrances.add(this);
     }
@@ -77,28 +74,12 @@ class Entrance implements Runnable {
 
     public static int sumEntrances() {
         int sum = 0;
-        for (Entrance entrance : entrances) {
+        for (Entrance32 entrance : entrances) {
             sum += entrance.getValue();
         }
         return sum;
     }
 }
 
-public class OrnamentalGarden {
-    public static void main(String[] args) throws Exception {
-        ExecutorService exec = Executors.newCachedThreadPool();
-        for (int i = 0; i < 5; i++) {
-            exec.execute(new Entrance(i));
-        }
-        TimeUnit.MILLISECONDS.sleep(3);
-        Entrance.cancel();
-        System.out.println("time:" + System.currentTimeMillis());
-        exec.shutdownNow();
-        if (!exec.awaitTermination(250, TimeUnit.MILLISECONDS)) {
-            System.out.println("Some tasks were not terminated:" + System.currentTimeMillis());
-            System.out.println(((ThreadPoolExecutor) exec).getActiveCount());
-        }
-        System.out.println("Total: " + Entrance.getTotalCount());
-        System.out.println("Sum of Entrances: " + Entrance.sumEntrances());
-    }
+public class Eg32 {
 }

@@ -1,32 +1,60 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
+import java.util.Vector;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -367,16 +395,189 @@ public class PatternTest<T> {
         }
     }
 
-    public static void main(String[] args) {
-        Exception e = new RuntimeException("aaaaa");
-        TestException testException = new TestException(e);
-        try {
-            testException.ff();
-        } catch (Exception e1) {
-            e1.printStackTrace();
+    static void ff(List<? extends G> gs) {
+
+    }
+
+    static class G2 {
+        public static AtomicInteger count = new AtomicInteger();
+        public final int id = count.addAndGet(1);
+    }
+
+    @FunctionalInterface
+    interface BB {
+        static void f(BB bb) {
+
         }
 
+        abstract int bb(int a, int b);
 
+    }
+
+    static void set(Map<String, String> map) {
+
+    }
+
+    enum MM1 {
+        aaa("A"), bbb("B");
+        private String value;
+
+        MM1(String value) {
+            this.value = value;
+        }
+    }
+
+    interface Test1 {
+        boolean isCancelled();
+    }
+
+    static class Test12 {
+        Test12(int a, int b) {
+
+        }
+        volatile boolean cancelled = false;
+        boolean isCancelled() {
+            return cancelled;
+        }
+    }
+
+    enum Day {
+        MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    }
+
+    static class GG1 {
+        List<G> list;
+    }
+    static abstract class TEST {
+        abstract void f();
+    }
+
+    static class TEST1 extends TEST {
+        @Override
+        void f() {
+            System.out.println("aaaaaaaaaaaaaaa");
+        }
+    }
+
+    static enum TEST2 {
+        A, B, C;
+    }
+
+    public static void main(String[] args) {
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            System.out.println(random.nextInt());
+        }
+//        map = map1;
+//        System.out.println(map);
+//        for (Map.Entry<String, G> entry : map.entrySet()) {
+//            String s = entry.getKey();
+//        }
+
+//        GG1 gg1 = new GG1();
+//        gg1.list = new ArrayList<>();
+//        gg1.list.add(new G());
+//        gg1.list.add(new G());
+//        Gson gson = new Gson();
+//        String json = gson.toJson(gg1);
+//        System.out.println(json);
+//        GG1 gg2 = gson.fromJson(json, GG1.class);
+//        System.out.println(gg2);
+//        System.out.println(gg2.list.get(0).getClass().getName());
+//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("E:\\testseri"));
+//        G g = new G();
+//        objectOutputStream.writeObject(g);
+//        objectOutputStream.close();
+//        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("E:\\testseri"));
+//        G g = (G) ois.readObject();
+//        System.out.println(g);
+//        ois.close();
+
+//        ExecutorService exec = Executors.newCachedThreadPool();
+//        FileOutputStream ops = new FileOutputStream("E:\\output.txt");
+//        ops.close();
+//        System.out.println(new File("E:\\output.txt").delete());
+//        StringBuilder builder1 = new StringBuilder();
+//        StringBuilder builder2 = new StringBuilder();
+//        for (int i = 0; i < 100000000; i++) {
+//            builder1.append("aaaaaa");
+//            builder2.append("bbbbbb");
+//        }
+//        String s1 = builder1.toString();
+//        String s2 = builder2.toString();
+//        exec.execute(() -> {
+//            try {
+//                System.out.println("open1");
+//                System.out.println("write1:" + TimeUnit.CONVSystem.currentTimeMillis());
+//                ops.write(s1.getBytes());
+//                System.out.println("write1:" + System.currentTimeMillis());
+//                System.out.println("write1");
+//                System.out.println("sleep start");
+//                System.out.println("sleep over");
+//                System.out.println("close1");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        exec.execute(() -> {
+//            try {
+//                System.out.println("open2");
+//                System.out.println("write2:" + System.currentTimeMillis());
+//                ops.write(s2.getBytes());
+//                System.out.println("write2:" + System.currentTimeMillis());
+//                System.out.println("write2");
+//                System.out.println("close2");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        exec.shutdown();
+//        String s = "/a/s/c/d";
+//        System.out.println(s.contains("/"));
+
+//        ExecutorService exec = Executors.newCachedThreadPool();
+//        exec.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    TimeUnit.MILLISECONDS.sleep(100);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                list.add("aaa");
+//            }
+//        });
+//        exec.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (list.size() == 0) {
+////                    for (String s : list) {
+////
+////                    }
+////                    System.out.println("aaaa");
+//                }
+//            }
+//        });
+//        exec.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 500000; i++) {
+//                    list.add("aaaaa");
+//                }
+////                System.out.println("finish");
+//            }
+//        });
+//        exec.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    for (String s : list) {
+//                    }
+//                }
+//            }
+//        });
+//        exec.shutdown();
 //        System.out.println(list1.get(0));
 //        System.out.println(list.get(0).getClass().getName());
 
@@ -669,38 +870,45 @@ class FF {
     public int a = 1;
 }
 
-abstract class G1 {
-    String c = "ccccccccc";
+// class G1 extends G {
+//    String c = "ccccccccc";
+//}
+//
+//class G2 extends G1 {
+//    String a = "aaaaaa";
+//    String b = "bbbbbbbbbbbb";
+//
+////    public G2() {
+////        a = "ddddddddddd";
+////    }
+//
+//    public G2(int a1, int b1) {
+//        super();
+//        a = "ddddddddddddd";
+//
+//    }
+//}
 
-    abstract void f();
-}
+class G implements Comparable<G> {
+    int age;
+    String name = "aaaa";
 
-class G2 extends G1 {
-    String a = "aaaaaa";
-    String b = "bbbbbbbbbbbb";
+    @Override
+    public int compareTo(G o) {
+        return age < o.age ? -1 : age == o.age ? 0 : 1;
+    }
 
-//    public G2() {
-//        a = "ddddddddddd";
+    @Override
+    public String toString() {
+        return "age:" + age;
+    }
+
+    //    @Override
+//    public int compareTo(G o) {
+//        return this.age1 - o.age1;
 //    }
 
-    public G2(int a1, int b1) {
-        super();
-        a = "ddddddddddddd";
-
-    }
-    @Override
-    void f() {
-
-    }
-}
-
-class G {
-    @Expose
-    GG gg;
-    @Expose
-    final String a = "aaaaaa";
-
-//    @Override
+    //    @Override
 //    public Object clone() throws CloneNotSupportedException {
 //        return super.clone();
 //    }

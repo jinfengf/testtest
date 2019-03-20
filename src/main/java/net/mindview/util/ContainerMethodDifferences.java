@@ -38,7 +38,7 @@ public class ContainerMethodDifferences {
         for (Class<?> c : type.getInterfaces()) {
             result.add(c.getSimpleName());
         }
-        println(result.toString());
+        print(result.toString());
     }
     static Set<String> object = methodSet(Object.class);
     static {
@@ -48,12 +48,12 @@ public class ContainerMethodDifferences {
         print(superset.getSimpleName() + " extends " + subset.getSimpleName() + ", adds: ");
         Set<String> comp = Sets.difference(methodSet(superset), methodSet(subset));
         comp.removeAll(object);
-        println(comp.toString());
+        print(comp.toString());
         interfaces(superset);
     }
 
     public static void main(String[] args) {
-        println("Collection: " + methodSet(Collection.class));
+        print("Collection: " + methodSet(Collection.class));
         interfaces(Collection.class);
         difference(Set.class, Collection.class);
         difference(HashSet.class, Set.class);
@@ -64,7 +64,7 @@ public class ContainerMethodDifferences {
         difference(LinkedList.class, List.class);
         difference(Queue.class, Collection.class);
         difference(PriorityQueue.class, Queue.class);
-        println("Map: " + methodSet(Map.class));
+        print("Map: " + methodSet(Map.class));
         difference(HashMap.class, Map.class);
         difference(LinkedHashMap.class, HashMap.class);
         difference(SortedMap.class, Map.class);
